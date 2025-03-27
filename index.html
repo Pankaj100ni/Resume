@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pankaj Soni - Resume</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            font-size: 10px;
+            line-height: 1.4;
+            color: #333;
+            width: 210mm;
+            height: 297mm;
+            margin: 0 auto;
+            padding: 15mm;
+            background-color: white;
+        }
+        /* Download button */
+        .download-btn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background-color: #1a5276;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        .download-btn:hover {
+            background-color: #2980b9;
+        }
+        /* A4 container */
+        #resume-content {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        /* Header section with color */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10mm;
+            background-color: #1a5276;
+            padding: 8mm;
+            border-radius: 2mm;
+            color: white;
+        }
+        .name-title {
+            flex-grow: 1;
+        }
+        h1 {
+            font-size: 18px;
+            margin-bottom: 2mm;
+            color: white;
+        }
+        h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #aed6f1;
+            margin-bottom: 2mm;
+        }
+        .tagline {
+            font-size: 10px;
+            font-style: italic;
+            color: #d6eaf8;
+        }
+        /* Contact info grid */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3mm;
+            margin-bottom: 6mm;
+            font-size: 9px;
+            background-color: #ebf5fb;
+            padding: 3mm;
+            border-radius: 2mm;
+        }
+        .contact-item {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #2874a6;
+        }
+        /* Section styles */
+        .section {
+            margin-bottom: 5mm;
+        }
+        .section-title {
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 2mm;
+            border-bottom: 0.5mm solid #3498db;
+            padding-bottom: 1mm;
+            color: #1a5276;
+        }
+        /* Experience entries */
+        .experience-entry {
+            margin-bottom: 4mm;
+        }
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1mm;
+        }
+        .job-title {
+            font-weight: bold;
+            font-size: 11px;
+            color: #2874a6;
+        }
+        .company {
+            font-weight: bold;
+            color: #2e86c1;
+        }
+        .period {
+            font-style: italic;
+            font-size: 9px;
+            color: #5499c7;
+        }
+        /* Lists */
+        ul {
+            padding-left: 4mm;
+            margin-top: 1mm;
+        }
+        li {
+            margin-bottom: 1mm;
+        }
+        li::marker {
+            color: #3498db;
+        }
+        /* Skills section */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3mm;
+        }
+        .skill-category {
+            margin-bottom: 2mm;
+        }
+        .skill-category-title {
+            font-weight: bold;
+            margin-bottom: 1mm;
+            color: #2874a6;
+        }
+        .skill-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2mm;
+        }
+        .skill-item {
+            background-color: #d4e6f1;
+            padding: 1mm 2mm;
+            border-radius: 1mm;
+            font-size: 9px;
+            color: #2c3e50;
+            border: 0.2mm solid #85c1e9;
+        }
+        /* Two-column layout */
+        .main-content {
+            display: grid;
+            grid-template-columns: 65% 35%;
+            gap: 10mm;
+            height: calc(100% - 38mm); /* Accounting for header and contact sections */
+        }
+        .column {
+            display: flex;
+            flex-direction: column;
+        }
+        /* Right column background */
+        .column:nth-child(2) {
+            background-color: #f8f9f9;
+            padding: 4mm;
+            border-radius: 2mm;
+            border-left: 0.5mm solid #3498db;
+        }
+        /* Projects, Certifications */
+        .project-item, .certification-item {
+            margin-bottom: 2mm;
+        }
+        .project-title, .cert-title {
+            font-weight: bold;
+            font-size: 10px;
+            color: #2874a6;
+        }
+        .project-description, .cert-org {
+            font-size: 9px;
+            color: #566573;
+        }
+        /* Minimal print styles */
+        @media print {
+            body {
+                padding: 10mm;
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            @page {
+                margin: 0;
+                size: a4;
+            }
+            .download-btn {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <button class="download-btn" onclick="generatePDF()">Download A4 PDF</button>
+    
+    <div id="resume-content">
+    <div class="header">
+        <div class="name-title">
+            <h1>Pankaj Soni</h1>
+            <h2>SENIOR SOFTWARE DEVELOPER</h2>
+            <p class="tagline">Strong ability to learn quickly, collaborate well in teams, and communicate ideas clearly and effectively.</p>
+        </div>
+    </div>
+
+    <div class="contact-grid">
+        <div class="contact-item">📧 pankajsoni.ps8327@gmail.com</div>
+        <div class="contact-item">📱 7777061051</div>
+        <div class="contact-item">https://github.com/Pankaj100ni/resume</div> 
+        <div class="contact-item">📍 HISAR, INDIA</div>
+        <div class="contact-item">💼 linkedin.com/in/pankaj-soni-989488196</div>
+        <div class="contact-item">🐦 @tinku_pankaj</div>
+        <div class="contact-item">💻 github.com/Pankaj100ni</div>
+    </div>
+
+    <div class="main-content">
+        <div class="column">
+            <!-- Experience Section -->
+            <div class="section">
+                <div class="section-title">EXPERIENCE</div>
+                
+                <div class="experience-entry">
+                    <div class="job-header">
+                        <span class="job-title">Senior Software Developer, <span class="company">UNO MINDA LTD</span></span>
+                        <span class="period">05/2023 - Present</span>
+                    </div>
+                    <ul>
+                        <li>Led development of "Cost is Right" application for component costing with focus on UX & efficiency</li>
+                        <li>Designed LLM architectures (RAG) for AI-powered answer engines & recommendation systems</li>
+                        <li>Implemented GenAI chatbot in document management systems improving retrieval efficiency</li>
+                        <li>Built ETL pipelines for data extraction, transformation, and analysis</li>
+                        <li>Participated in Data Lake and predictive analytics implementation projects</li>
+                        <li>Extended GenAI search functionality to mobile applications for cross-platform consistency</li>
+                        <li>Implemented automatic access revocation for employee separation, enhancing security</li>
+                    </ul>
+                </div>
+                
+                <div class="experience-entry">
+                    <div class="job-header">
+                        <span class="job-title">Flutter Intern, <span class="company">Regent DigiTech</span></span>
+                        <span class="period">01/2023 - 05/2023</span>
+                    </div>
+                    <ul>
+                        <li>Developed e-commerce app from scratch with OTP authentication, dashboard & profile features</li>
+                        <li>Enhanced UX through responsive design and performance optimization</li>
+                    </ul>
+                </div>
+                
+                <div class="experience-entry">
+                    <div class="job-header">
+                        <span class="job-title">Flutter Intern, <span class="company">ConnectOSh</span></span>
+                        <span class="period">05/2022 - 07/2022</span>
+                    </div>
+                    <ul>
+                        <li>Created utility apps including To-Do List & BMI Calculator with Flutter</li>
+                        <li>Gained hands-on experience in state management and UI design</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Skills Section -->
+            <div class="section">
+                <div class="section-title">TECHNICAL SKILLS</div>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <div class="skill-category-title">Development</div>
+                        <div class="skill-items">
+                            <span class="skill-item">Flutter</span>
+                            <span class="skill-item">C++</span>
+                            <span class="skill-item">HTML/CSS/JS</span>
+                            <span class="skill-item">Python</span>
+                            <span class="skill-item">Flask</span>
+                            <span class="skill-item">Bootstrap</span>
+                            <span class="skill-item">WordPress</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-category-title">AI & ML</div>
+                        <div class="skill-items">
+                            <span class="skill-item">LLMs</span>
+                            <span class="skill-item">RAG</span>
+                            <span class="skill-item">RNNs</span>
+                            <span class="skill-item">PyTorch</span>
+                            <span class="skill-item">Transformers</span>
+                            <span class="skill-item">Vector DB</span>
+                            <span class="skill-item">GenAI</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-category-title">Data Science</div>
+                        <div class="skill-items">
+                            <span class="skill-item">NumPy</span>
+                            <span class="skill-item">Pandas</span>
+                            <span class="skill-item">Scikit-learn</span>
+                            <span class="skill-item">ETL</span>
+                            <span class="skill-item">Data Lake</span>
+                            <span class="skill-item">SQL/NoSQL</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-category-title">AWS Cloud</div>
+                        <div class="skill-items">
+                            <span class="skill-item">SageMaker</span>
+                            <span class="skill-item">EC2</span>
+                            <span class="skill-item">S3</span>
+                            <span class="skill-item">RDS</span>
+                            <span class="skill-item">Route 53</span>
+                            <span class="skill-item">CloudFront</span>
+                            <span class="skill-item">Athena</span>
+                            <span class="skill-item">Bedrock</span>
+                            <span class="skill-item">Load Balancer</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <div class="skill-category-title">Professional</div>
+                        <div class="skill-items">
+                            <span class="skill-item">Agile</span>
+                            <span class="skill-item">Problem Solving</span>
+                            <span class="skill-item">Documentation</span>
+                            <span class="skill-item">Presentation</span>
+                            <span class="skill-item">Firebase</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="column">
+            <!-- Education Section -->
+            <div class="section">
+                <div class="section-title">EDUCATION</div>
+                <div class="experience-entry">
+                    <div class="job-title">Bachelor of Technology</div>
+                    <div>CENTRAL UNIVERSITY OF HARYANA</div>
+                    <div class="period">08/2019 - 06/2023, 81.1%</div>
+                    <div>Computer Science and Engineering</div>
+                </div>
+                <div class="experience-entry">
+                    <div class="job-title">BSc in Programming and Data Science</div>
+                    <div>IIT MADRAS</div>
+                    <div class="period">12/2020 - Dropped out</div>
+                </div>
+                <div class="experience-entry">
+                    <div class="job-title">12th (Non-Medical)</div>
+                    <div>Moga Devi Minda Memorial School</div>
+                    <div class="period">06/2018 - 05/2019, 73.2%</div>
+                </div>
+            </div>
+
+            <!-- Certifications Section -->
+            <div class="section">
+                <div class="section-title">CERTIFICATIONS</div>
+                <div class="certification-item">
+                    <div class="cert-title">AWS Solution Architect</div>
+                    <div class="cert-org">Associate (SAA-C03)</div>
+                </div>
+                <div class="certification-item">
+                    <div class="cert-title">Generative AI with LangChain & HuggingFace</div>
+                </div>
+                <div class="certification-item">
+                    <div class="cert-title">Ultimate Dart & Flutter Course</div>
+                </div>
+                <div class="certification-item">
+                    <div class="cert-title">Snowflake</div>
+                </div>
+                <div class="certification-item">
+                    <div class="cert-title">Industry 4.0 Training</div>
+                    <div class="cert-org">Nasiq MIQ</div>
+                </div>
+                <div class="certification-item">
+                    <div class="cert-title">AI Immersion Week</div>
+                    <div class="cert-org">CII HP Center</div>
+                </div>
+            </div>
+
+            <!-- Projects Section -->
+            <div class="section">
+                <div class="section-title">PERSONAL PROJECTS</div>
+                <div class="project-item">
+                    <div class="project-title">Portfolio Website</div>
+                    <div class="project-description">Personal portfolio showcasing projects</div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title">University Attendance App</div>
+                    <div class="project-description">Mobile application for attendance tracking</div>
+                </div>
+                <div class="project-item">
+                    <div class="project-title">ToDo App</div>
+                    <div class="project-description">Available on Google Play Store</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <script>
+        function generatePDF() {
+            // Get the element to convert to PDF
+            const element = document.getElementById('resume-content');
+            
+            // Configure options for html2pdf
+            const options = {
+                margin: 0.5,
+                filename: 'Pankaj_Soni_Resume.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            // Generate the PDF
+            html2pdf().set(options).from(element).save();
+        }
+    </script>
+</body>
+</html>    
